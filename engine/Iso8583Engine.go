@@ -3,7 +3,7 @@ package tcpengine
 import (
 	"fmt"
 	"github.com/kpango/glg"
-	"github.com/randyardiansyah25/libpkg/iso8583uparser"
+	"github.com/randyardiansyah25/iso8583u/parser"
 	"github.com/randyardiansyah25/libpkg/net/tcp"
 	"github.com/randyardiansyah25/libpkg/util/str"
 	"net"
