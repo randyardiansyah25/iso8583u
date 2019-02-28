@@ -3,7 +3,6 @@ package tcpengine
 import (
 	"fmt"
 	"github.com/randyardiansyah25/iso8583u/parser"
-	"github.com/randyardiansyah25/libpkg/iso8583uparser"
 	"strings"
 	"testing"
 )
