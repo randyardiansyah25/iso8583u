@@ -14,7 +14,10 @@ import (
 
 type TcpHandler func(iso *iso8583uParser.ISO8583U)
 
-func GetEngine(readerTimeout int, fieldNumberKey ...int64) *TCPIso8583Engine {
+/*
+
+ */
+func GetEngine(readerTimeout int, fieldNumberKey int64) *TCPIso8583Engine {
 	return &TCPIso8583Engine{
 		Timeout:         readerTimeout,
 		FieldNumber:     fieldNumberKey,
