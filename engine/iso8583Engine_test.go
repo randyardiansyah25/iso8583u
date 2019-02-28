@@ -3,6 +3,8 @@ package tcpengine
 import (
 	"fmt"
 	"github.com/randyardiansyah25/iso8583u/parser"
+	"github.com/randyardiansyah25/libpkg/iso8583uparser"
+	"strings"
 	"testing"
 )
 
@@ -20,4 +22,10 @@ func TestIso8583Engine(t *testing.T) {
 		fmt.Println("error")
 	}
 
+	s := "3:100700"
+	if strings.Contains(s, ":") {
+		fmt.Println(" `:` char is exist")
+	} else {
+		fmt.Println("doesn't exist")
+	}
 }
