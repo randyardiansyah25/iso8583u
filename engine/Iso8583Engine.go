@@ -26,7 +26,7 @@ func GetEngine(readerTimeout int, fieldNumberKey int64) *TCPIso8583Engine {
 }
 
 type TCPIso8583Engine struct {
-	FieldNumber     []int64
+	FieldNumber     int64
 	Timeout         int
 	tcpHandlerGroup map[string]TcpHandler
 }
@@ -53,11 +53,11 @@ func (t *TCPIso8583Engine) listen(port string, doInBackground bool) (err error) 
 	return
 }
 
-func (t *TCPIso8583Engine) AddHandler(handler TcpHandler, key ...string) {
-	t.tcpHandlerGroup[strings.Join(key, "")] = handler
+func (t *TCPIso8583Engine) AddHandler(handler TcpHandler, key string) {
+	t.tcpHandlerGroup[key] = handler
 }
 
-func acceptConnection(listener net.Listener, handlerChain map[string]TcpHandler, timeout int, fieldNumber []int64) {
+func acceptConnection(listener net.Listener, handlerChain map[string]TcpHandler, timeout int, fieldNumber int64) {
 	for {
 		c, err := listener.Accept()
 		if err != nil {
@@ -70,7 +70,7 @@ func acceptConnection(listener net.Listener, handlerChain map[string]TcpHandler,
 	}
 }
 
-func handler(c net.Conn, handlerChain map[string]TcpHandler, fieldNumber []int64) {
+func handler(c net.Conn, handlerChain map[string]TcpHandler, fieldNumber int64) {
 	defer func() {
 		_ = c.Close()
 	}()
@@ -92,13 +92,9 @@ func handler(c net.Conn, handlerChain map[string]TcpHandler, fieldNumber []int64
 	}
 	printRequest(message, c.RemoteAddr().String(), iso)
 
-	var fieldValues []string
-	for _, field := range fieldNumber {
-		fieldVal := iso.GetField(field)
-		fieldValues = append(fieldValues, fieldVal)
-	}
+	fieldVal := iso.GetField(fieldNumber)
 
-	funct := handlerChain[strings.Join(fieldValues, "")]
+	funct := handlerChain[fieldVal]
 	if funct != nil {
 		funct(&iso)
 	} else {
