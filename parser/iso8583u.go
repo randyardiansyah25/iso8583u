@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019. Author Randy Ardiansyah <Detwentyfive@gmail.com>
+ */
+
 package iso8583uParser
 
 import (
