@@ -79,6 +79,10 @@ func (p *ISO8583U) GoUnMarshal(message string) error {
 }
 
 func (p *ISO8583U) GetField(fieldNo int64) string {
+	return p.isoElement[fieldNo]
+}
+
+func (p *ISO8583U) GetFieldTrim(fieldNo int64) string {
 	return strings.TrimSpace(p.isoElement[fieldNo])
 }
 
