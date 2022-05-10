@@ -7,13 +7,14 @@ package iso8583uParser
 import (
 	"errors"
 	"fmt"
-	"github.com/mofax/iso8583"
-	"github.com/randyardiansyah25/libpkg/util/str"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/mofax/iso8583"
+	strutils "github.com/randyardiansyah25/libpkg/util/str"
+	"gopkg.in/yaml.v2"
 )
 
 const DefaultSpecFile string = "isopackager.yml"
@@ -79,7 +80,7 @@ func (p *ISO8583U) GoUnMarshal(message string) error {
 }
 
 func (p *ISO8583U) GetField(fieldNo int64) string {
-	return strings.TrimSpace(p.isoElement[fieldNo])
+	return p.isoElement[fieldNo]
 }
 
 func (p *ISO8583U) GetBitmap() string {

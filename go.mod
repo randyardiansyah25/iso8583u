@@ -1,6 +1,6 @@
 module github.com/randyardiansyah25/iso8583u
 
-go 1.17
+go 1.18
 
 require (
 	github.com/kpango/glg v1.6.4
