@@ -67,7 +67,14 @@ func (p *ISO8583U) getSpecFile() string {
 	return p.SpecFile
 }
 
-func (p *ISO8583U) GoUnMarshal(message string) error {
+func (p *ISO8583U) GoUnMarshal(message string) (err error) {
+	defer func() {
+		if gotPanic := recover(); gotPanic != nil {
+			errs := fmt.Sprint("Error occured during parse content :", gotPanic)
+			err = errors.New(errs)
+		}
+	}()
+
 	isoFormatter := iso8583.NewISOStruct(p.getSpecFile(), true)
 	isoStructParser, err := isoFormatter.Parse(message)
 	if err != nil {
@@ -76,7 +83,7 @@ func (p *ISO8583U) GoUnMarshal(message string) error {
 	p.isoMTI = isoStructParser.Mti.String()
 	p.isoBitmap, _ = iso8583.BitMapArrayToHex(isoStructParser.Bitmap)
 	p.isoElement = isoStructParser.Elements.GetElements()
-	return nil
+	return err
 }
 
 func (p *ISO8583U) GetField(fieldNo int64) string {
@@ -108,7 +115,7 @@ func (p *ISO8583U) SetField(fieldNo int64, value interface{}) {
 func (p *ISO8583U) GoMarshal() (string, error) {
 	isoFormatter := iso8583.NewISOStruct(p.getSpecFile(), true)
 	if len(p.isoMTI) <= 0 {
-		return "", errors.New("Empty generates invalid MTI")
+		return "", errors.New("empty generates invalid MTI")
 	}
 
 	_ = isoFormatter.AddMTI(p.isoMTI)
