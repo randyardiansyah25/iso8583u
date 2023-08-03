@@ -7,12 +7,12 @@ package iso8583uParser
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
 
-	"github.com/mofax/iso8583"
+	"github.com/randyardiansyah25/iso8583u/iso8583"
 	strutils "github.com/randyardiansyah25/libpkg/util/str"
 	"gopkg.in/yaml.v2"
 )
@@ -42,21 +42,29 @@ type FieldDescription struct {
 	Label       string `yaml:"Label"`
 }
 
+var isoFields map[int]FieldDescription
+
 type ISO8583U struct {
 	SpecFile   string
 	isoMTI     string
 	isoBitmap  string
 	isoElement map[int64]string
-	fields     map[int]FieldDescription
+	//fields     map[int]FieldDescription // field dibuat 1 kali load saja supaya tidak makan memory, krn untuk memuat data ini, harus open file
 }
 
 func (p *ISO8583U) prepare() error {
 	p.isoElement = make(map[int64]string, 0)
-	ymlContent, err := ioutil.ReadFile(p.getSpecFile())
+
+	// jika sudah pernah diload, tidak perlu diteruskan
+	if isoFields != nil {
+		return nil
+	}
+
+	ymlContent, err := os.ReadFile(p.getSpecFile())
 	if err != nil {
 		return err
 	}
-	err = yaml.Unmarshal(ymlContent, &p.fields)
+	err = yaml.Unmarshal(ymlContent, &isoFields)
 	return err
 }
 
@@ -101,7 +109,7 @@ func (p *ISO8583U) SetMti(mti string) {
 func (p *ISO8583U) SetField(fieldNo int64, value interface{}) {
 	sValue := fmt.Sprint(value)
 
-	fieldDef := p.fields[int(fieldNo)]
+	fieldDef := isoFields[int(fieldNo)]
 	if fieldDef.LenType == "fixed" {
 		if fieldDef.ContentType == "n" {
 			sValue = strutils.LeftPad(sValue, fieldDef.MaxLen, "0")
@@ -119,7 +127,7 @@ func (p *ISO8583U) GoMarshal() (string, error) {
 	}
 
 	_ = isoFormatter.AddMTI(p.isoMTI)
-
+	//isoFormatter.Elements.SetElements(p.isoElement)
 	for field, val := range p.isoElement {
 		_ = isoFormatter.AddField(field, val)
 	}

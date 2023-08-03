@@ -22,8 +22,8 @@ func TestISO8583U_GoUnMarshal(t *testing.T) {
 }
 
 func TestISO8583U_GoMarshal(t *testing.T) {
-	//iso, _ := NewISO8583U("../isopackager.yml")
-	iso, err := NewISO8583U()
+	iso, err := NewISO8583U("../isopackager.yml")
+	//iso, err := NewISO8583U()
 	if err != nil {
 		fmt.Println("load package error", err.Error())
 		return

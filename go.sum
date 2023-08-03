@@ -6,8 +6,6 @@ github.com/kpango/fastime v1.0.17 h1:IZOBLEJrr2MIpsY1ihGhpkY+9pEikJWYwPEMu0/VdcY
 github.com/kpango/fastime v1.0.17/go.mod h1:lVqUTcXmQnk1wriyvq5DElbRSRDC0XtqbXQRdz0Eo+g=
 github.com/kpango/glg v1.6.4 h1:r1oCPNDOXRvS64idr4b2NoVNORNfJjOedOAU10PrfO8=
 github.com/kpango/glg v1.6.4/go.mod h1:nW5//GFgKG9rCvrDj+4AK4lBS8X608jtBIOyO+EoWXc=
-github.com/mofax/iso8583 v0.0.0-20180221163034-b7d818f6d7eb h1:C9fBgNbp21c3r1uhPGk8XngANPae0hDbjWJkqbnYoh8=
-github.com/mofax/iso8583 v0.0.0-20180221163034-b7d818f6d7eb/go.mod h1:miE6UQLUc3C2+Z7LN+4i9LfKjXBgGH1xAYRZKzyr93I=
 github.com/randyardiansyah25/libpkg v0.0.0-20211222133600-94b26685b309 h1:1qOqE5BykPpEJkEuX+GyAFMSP0JzFU+LW9np+0iQRyY=
 github.com/randyardiansyah25/libpkg v0.0.0-20211222133600-94b26685b309/go.mod h1:aQhKNLqqO9+VY8qhXp35ZfAyA9rVdhNcYeH8VQ1c7tM=
 github.com/sirupsen/logrus v1.8.1 h1:dJKuHgqk1NNQlqoA6BTlM1Wf9DOH3NBjQyu0h9+AZZE=
