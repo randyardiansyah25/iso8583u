@@ -19,6 +19,7 @@ import (
 
 type TcpHandler func(iso *iso8583uParser.ISO8583U)
 
+var defaultHandler TcpHandler
 
 func GetEngine(readerTimeout int, fieldNumberKey ...int64) *TCPIso8583Engine {
 	return &TCPIso8583Engine{
@@ -47,7 +48,7 @@ func (t *TCPIso8583Engine) listen(port string, doInBackground bool) (err error) 
 	if err != nil {
 		return err
 	}
-	
+
 	go logger.Watcher()
 
 	if doInBackground {
@@ -60,6 +61,10 @@ func (t *TCPIso8583Engine) listen(port string, doInBackground bool) (err error) 
 
 func (t *TCPIso8583Engine) AddHandler(handler TcpHandler, key ...string) {
 	t.tcpHandlerGroup[strings.Join(key, "")] = handler
+}
+
+func (t *TCPIso8583Engine) AddDefaultHandler(handler TcpHandler) {
+	defaultHandler = handler
 }
 
 func acceptConnection(listener net.Listener, handlerChain map[string]TcpHandler, timeout int, fieldNumber []int64) {
@@ -114,7 +119,11 @@ func handler(c net.Conn, handlerChain map[string]TcpHandler, fieldNumber []int64
 		//iso.SetField(39, rc.ISOFailed)
 		//iso.SetField(48, "Not found")
 		//_ = glg.Error("Handle not found..")
-		logger.Error("Handle not found..")
+		if defaultHandler != nil {
+
+		} else {
+			logger.Error("Handle not found..")
+		}
 		return
 	}
 	resp, err := iso.GoMarshal()
@@ -147,4 +156,3 @@ func printRR(cmd, address, msg string, u iso8583uParser.ISO8583U) {
 	//_ = glg.Log(cmd, address, msg, strings.Join(clog, ""))
 	logger.Log(cmd, address, msg, strings.Join(clog, ""))
 }
-
