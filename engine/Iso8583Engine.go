@@ -120,11 +120,12 @@ func handler(c net.Conn, handlerChain map[string]TcpHandler, fieldNumber []int64
 		//iso.SetField(48, "Not found")
 		//_ = glg.Error("Handle not found..")
 		if defaultHandler != nil {
-
+			defaultHandler(&iso)
 		} else {
 			logger.Error("Handle not found..")
+			return
 		}
-		return
+
 	}
 	resp, err := iso.GoMarshal()
 	if err != nil {
